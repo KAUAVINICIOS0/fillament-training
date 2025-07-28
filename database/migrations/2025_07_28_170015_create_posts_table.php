@@ -20,8 +20,7 @@ return new class extends Migration
             $table->text('content');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->unsigned();
             $table->foreignId('tag_id')->nullable()->constrained()->unsigned();
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at')->onUpdate('current_timestamp');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

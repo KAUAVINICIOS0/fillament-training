@@ -21,7 +21,7 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'tag_name' => fake()->regexify('[A-Za-z0-9]{100}'),
+            'tag_name' => fake()->regexify('[A-Za-z0-9]{10}'),
             'created_at' => fake()->dateTime(),
             'updated_at' => fake()->dateTime(),
         ];
