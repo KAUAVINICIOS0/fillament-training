@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,6 +41,15 @@ class UserResource extends Resource
 
                 TextColumn::make('email')
                     ->label('Email'),
+
+                IconColumn::make('is_admin')
+                    ->label('admin?')
+                    ->icon(function(string $state){
+                        return $state == '1' ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle';
+                    })
+                    ->color(function(string $state){
+                        return $state == '1' ? 'success' : 'danger';
+                    }),
 
                 TextColumn::make('comments_count')
                     ->label('Comentários')
