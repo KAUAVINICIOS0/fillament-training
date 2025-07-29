@@ -44,12 +44,9 @@ class UserResource extends Resource
 
                 IconColumn::make('is_admin')
                     ->label('admin?')
-                    ->icon(function(string $state){
-                        return $state == '1' ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle';
-                    })
-                    ->color(function(string $state){
-                        return $state == '1' ? 'success' : 'danger';
-                    }),
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-badge')
+                    ->falseIcon('heroicon-o-x-circle'),
 
                 TextColumn::make('comments_count')
                     ->label('Comentários')
