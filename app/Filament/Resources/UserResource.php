@@ -44,9 +44,11 @@ class UserResource extends Resource
 
                 IconColumn::make('is_admin')
                     ->label('admin?')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-badge')
-                    ->falseIcon('heroicon-o-x-circle'),
+                    ->boolean(),
+
+                TextColumn::make('phone')
+                    ->label('Telefone')
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('comments_count')
                     ->label('Comentários')
