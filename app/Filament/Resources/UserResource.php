@@ -6,6 +6,9 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -28,7 +31,40 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->rules(['required'])
+                    ->label('nome')
+                    ->placeholder('nome do usuário')
+                    ->required()
+                    ->required(),
+
+                    TextInput::make('email')
+                    ->rules(['required'])
+                    ->placeholder('email@exemple.com')
+                    ->required()
+                    ->email()
+                    ->unique(ignoreRecord:True),
+
+                    TextInput::make('password')
+                    ->rules(['required'])
+                    ->placeholder('password')
+                    ->password()
+                    ->required()
+                    ->visibleOn('create'),
+
+                    TextInput::make('phone')
+                        ->label('telefone')
+                        ->mask('(99) 99999-9999')
+                        ->placeholder('(__) _____-____'),
+
+                    FileUpload::make('avatar')
+                        ->directory('avatars')
+                        ->avatar()
+                        ->imageEditor(),
+
+                    Toggle::make('is_admin')
+                        ->label('Administrador'),
+
             ]);
     }
 

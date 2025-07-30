@@ -33,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->font('Nova Square')
             ->colors([
-                'primary' => Color::Sky,
+                'primary' => Color::Gray,
                 'gray' => Color::Indigo,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
