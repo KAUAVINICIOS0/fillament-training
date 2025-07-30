@@ -27,6 +27,8 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'is_admin' => rand(0, 1),
             'phone' => '16993556789',
+            'avatar' => 'https://randomuser.me/api/portraits/' . fake()->randomElement(['women', 'men']) . '/' 
+                . rand(1, 100) . 'jpg',
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
