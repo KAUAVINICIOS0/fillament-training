@@ -39,62 +39,82 @@ class UserResource extends Resource
             ->schema([
 
                 Tabs::make('tabs')
+                    ->columnSpanFull()
+                    ->contained(false)
                     ->tabs([
+
                         Tab::make('User Data')
+                            ->icon('heroicon-o-users')
                             ->schema([
-                                TextInput::make('name')
-                                    ->helperText('nome do usuário')
-                                    ->hint(function ($operation) {
-                                        if ($operation == 'create') {
-                                            return 'Nome de usuário';
-                                        }
-                                        return 'atualize o nome de usuário';
-                                    })
-                                    ->rules(['required'])
-                                    ->label('nome')
-                                    ->placeholder('nome do usuário')
-                                    ->required()
-                                    ->required(),
+                                Section::make('Dados do usuário')
+                                    ->description('informações básicas do usuário')
+                                    ->schema([
+                                        TextInput::make('name')
+                                            ->helperText('nome do usuário')
+                                            ->hint(function ($operation) {
+                                                if ($operation == 'create') {
+                                                    return 'Nome de usuário';
+                                                }
+                                                return 'atualize o nome de usuário';
+                                            })
+                                            ->rules(['required'])
+                                            ->label('nome')
+                                            ->placeholder('nome do usuário')
+                                            ->required()
+                                            ->required(),
 
-                                TextInput::make('email')
-                                    ->rules(['required'])
-                                    ->helperText('email@exemple.com')
-                                    ->hint('email@exemple.com')
-                                    ->placeholder('email@exemple.com')
-                                    ->required()
-                                    ->email()
-                                    ->unique(ignoreRecord: True),
+                                        TextInput::make('email')
+                                            ->rules(['required'])
+                                            ->helperText('email@exemple.com')
+                                            ->hint('email@exemple.com')
+                                            ->placeholder('email@exemple.com')
+                                            ->required()
+                                            ->email()
+                                            ->unique(ignoreRecord: True),
 
-                                TextInput::make('password')
-                                    ->rules(['required'])
-                                    ->helperText('senha do usuário')
-                                    ->hint('senha do usuário')
-                                    ->placeholder('password')
-                                    ->password()
-                                    ->required()
-                                    ->visibleOn('create'),
+                                        TextInput::make('password')
+                                            ->rules(['required'])
+                                            ->helperText('senha do usuário')
+                                            ->hint('senha do usuário')
+                                            ->placeholder('password')
+                                            ->password()
+                                            ->required()
+                                            ->visibleOn('create'),
 
-                                TextInput::make('phone')
-                                    ->helperText('telefone do usuário')
-                                    ->hint('telefone do usuário')
-                                    ->label('telefone')
-                                    ->mask('(99) 99999-9999')
-                                    ->placeholder('(__) _____-____'),
+                                        TextInput::make('phone')
+                                            ->helperText('telefone do usuário')
+                                            ->hint('telefone do usuário')
+                                            ->label('telefone')
+                                            ->mask('(99) 99999-9999')
+                                            ->placeholder('(__) _____-____'),
+                                    ]),
+
                             ]),
+
                         Tab::make('avatar')
+                            ->icon('heroicon-o-photo')
                             ->schema([
-                                FileUpload::make('avatar')
-                                    ->image()
-                                    ->directory('avatars')
-                                    ->imageEditor(),
+                                Section::make('Foto do usuário')
+                                    ->description('coloque a foto do usuário')
+                                    ->schema([
+                                        FileUpload::make('avatar')
+                                            ->image()
+                                            ->directory('avatars')
+                                            ->imageEditor(),
+                                    ]),
                             ]),
 
-                        Tab::make('Termos de administrador')
+                        Tab::make('Administrador')
+                            ->icon('heroicon-o-check-circle')
                             ->schema([
-                                Toggle::make('is_admin')
-                                    ->helperText('Usuário é administrador?')
-                                    ->hint('Escolha status do usuário')
-                                    ->label('Administrador'),
+                                Section::make('termos de administrador')
+                                    ->description('admin?')
+                                    ->schema([
+                                        Toggle::make('is_admin')
+                                            ->helperText('Usuário é administrador?')
+                                            ->hint('Escolha status do usuário')
+                                            ->label('Administrador'),
+                                    ]),
                             ])
                     ]),
             ]);
