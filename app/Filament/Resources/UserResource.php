@@ -27,6 +27,7 @@ use League\CommonMark\Extension\DescriptionList\Node\Description;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+        protected static ?int $navigationSort = 1;
 
     // protected static ?string $slug = 'users/index';
 
@@ -162,7 +163,7 @@ class UserResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
 
             ])
             ->bulkActions([

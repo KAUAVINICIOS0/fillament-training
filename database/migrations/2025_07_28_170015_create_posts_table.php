@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 100);
             $table->string('slug', 150);
+            $table->boolean('is_published')->default(false);
             $table->text('content');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->unsigned();
             $table->foreignId('tag_id')->nullable()->constrained()->unsigned();
