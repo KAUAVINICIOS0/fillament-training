@@ -31,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Magikarp')
             ->defaultThemeMode(ThemeMode::Dark)
             ->login()
+            ->profile()
             ->font('Nova Square')
             ->colors([
                 'primary' => Color::Gray,
