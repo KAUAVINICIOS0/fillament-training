@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Reply;
@@ -19,7 +20,8 @@ class DatabaseSeeder extends Seeder
     {
         $users = User::factory(30)->create();
         $tags = Tag::factory(30)->create();
-        $posts = Post::factory(30)->recycle($users)->recycle($tags)->create();
+        $categories = Category::factory(30)->create();
+        $posts = Post::factory(30)->recycle($categories)->recycle($users)->recycle($tags)->create();
         $comments = Comment::factory(30)->recycle($users)->recycle($posts)->create();
         Reply::factory(30)->recycle($users)->recycle($comments)->create();
         
