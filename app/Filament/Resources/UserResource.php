@@ -7,6 +7,7 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -19,6 +20,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use League\CommonMark\Extension\DescriptionList\Node\Description;
 
 class UserResource extends Resource
 {
@@ -33,39 +35,79 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->rules(['required'])
-                    ->label('nome')
-                    ->placeholder('nome do usuário')
-                    ->required()
-                    ->required(),
 
-                    TextInput::make('email')
-                    ->rules(['required'])
-                    ->placeholder('email@exemple.com')
-                    ->required()
-                    ->email()
-                    ->unique(ignoreRecord:True),
+                Section::make('Informações do usuário')
+                    ->icon('heroicon-o-user')
+                    ->description(function($operation){
+                        if($operation == 'create'){
+                            return 'crie um novo usuário';
+                        }
+                        return 'atualize as informações do usuário';
+                    })
+                    ->columns(2)
+                    ->collapsible()
+                    ->schema([
+                        TextInput::make('name')
+                            ->helperText('nome do usuário')
+                            ->hint(function($operation){
+                                if($operation == 'create'){
+                                    return 'Nome de usuário';
+                                }
+                                return 'atualize o nome de usuário';
+                            })
+                            ->rules(['required'])
+                            ->label('nome')
+                            ->placeholder('nome do usuário')
+                            ->required()
+                            ->required(),
 
-                    TextInput::make('password')
-                    ->rules(['required'])
-                    ->placeholder('password')
-                    ->password()
-                    ->required()
-                    ->visibleOn('create'),
+                        TextInput::make('email')
+                            ->rules(['required'])
+                            ->helperText('email@exemple.com')
+                            ->hint('email@exemple.com')
+                            ->placeholder('email@exemple.com')
+                            ->required()
+                            ->email()
+                            ->unique(ignoreRecord: True),
 
-                    TextInput::make('phone')
-                        ->label('telefone')
-                        ->mask('(99) 99999-9999')
-                        ->placeholder('(__) _____-____'),
+                        TextInput::make('password')
+                            ->rules(['required'])
+                            ->helperText('senha do usuário')
+                            ->hint('senha do usuário')
+                            ->placeholder('password')
+                            ->password()
+                            ->required()
+                            ->visibleOn('create'),
 
-                    FileUpload::make('avatar')
-                        ->directory('avatars')
-                        ->avatar()
-                        ->imageEditor(),
+                        TextInput::make('phone')
+                            ->helperText('telefone do usuário')
+                            ->hint('telefone do usuário')
+                            ->label('telefone')
+                            ->mask('(99) 99999-9999')
+                            ->placeholder('(__) _____-____'),
+                    ]),
 
-                    Toggle::make('is_admin')
-                        ->label('Administrador'),
+                Section::make('Foto')
+                    ->icon('heroicon-o-photo')
+                    ->description('Foto de perfil do usuário')
+                    ->collapsed()
+                    ->schema([
+                        FileUpload::make('avatar')
+                            ->image()
+                            ->directory('avatars')
+                            ->imageEditor(),
+                    ]),
+
+                Section::make('Termos de administrador')
+                    ->icon('heroicon-o-check-circle')
+                    ->description('escolha se o usuário é administrador')
+                    ->schema([
+                        Toggle::make('is_admin')
+                            ->helperText('Usuário é administrador?')
+                            ->hint('Escolha status do usuário')
+                            ->label('Administrador'),
+                    ]),
+
 
             ]);
     }
@@ -113,7 +155,7 @@ class UserResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ])
-                
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -137,7 +179,8 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
-    public static function getNavigationBadge(): ?string{
+    public static function getNavigationBadge(): ?string
+    {
         return static::$model::count();
     }
 }
