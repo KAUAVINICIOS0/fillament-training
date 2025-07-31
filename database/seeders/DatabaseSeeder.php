@@ -18,6 +18,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::factory()->create([
+                'name' => 'admin',
+                'is_admin' => 1,
+                'phone' => '16993556789',
+                'avatar' => 'https://randomuser.me/api/portraits/' . fake()->randomElement(['women', 'men']) . '/'
+                    . rand(1, 100) . '.jpg',
+                'email' => 'admin@admin.com',
+                'password' => 'admin',
+        ]);
         $users = User::factory(30)->create();
         $tags = Tag::factory(30)->create();
         $categories = Category::factory(30)->create();
