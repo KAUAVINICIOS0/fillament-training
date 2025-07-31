@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->default()
             ->id('admin')
-            ->path('/')
+            ->path('admin')
             ->brandName('Magikarp')
             ->defaultThemeMode(ThemeMode::Dark)
             ->login()
