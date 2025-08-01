@@ -4,7 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Post;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,6 +22,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Str;
 
 class PostResource extends Resource
 {
@@ -27,7 +35,90 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Section::make('Post information')
+                    ->description(function ($operation) {
+                        if ($operation == 'create') {
+                            return 'Create a new post';
+                        }
+                        return 'Edit post';
+                    })
+                    ->columns(2)
+                    ->schema([
+
+                        TextInput::make('title')
+                            ->helperText('post title')
+                            ->hint('post title')
+                            ->label('title')
+                            ->required()
+                            ->live(onBlur:true)
+                            ->afterStateUpdated(function ($state, $set) {
+                                $set('slug', Str::slug($state));
+                            })
+                            ->placeholder('post title'),
+
+                        TextInput::make('slug')
+                            ->helperText('Post slug')
+                            ->hint('Post slug')
+                            ->label('slug')
+                            ->required()
+                            ->placeholder('post slug'),
+                    ])->collapsible(),
+
+                Section::make('content')
+                    ->description('content')
+                    ->schema([
+                        RichEditor::make('content')
+                            ->helperText('Post Content')
+                            ->hint('Post content')
+                            ->placeholder('Post content')
+                            ->label('Content')
+                            ->required(),
+                    ])->columnSpanFull()->collapsible(),
+
+                Section::make('thumbnail')
+                    ->description('thumbnail')
+                    ->schema([
+                        FileUpload::make('thumbnail')
+                        ->image()
+                        ->directory('thumbs')
+                            ->helperText('thumbnail')
+                            ->hint('thumbnail')
+                            ->label('thumbnail')
+                            ->required()
+                    ])->columnSpanFull()->collapsible(),
+
+                Section::make('Categories and tags')
+                    ->description('select categories and tags')
+                    ->schema([
+                        Select::make('category_id')
+                            ->label('category')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->relationship('category', 'name'),
+
+                        Select::make('tags')
+                            ->multiple()
+                            ->label('tags')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->relationship('tags', 'tag_name'),
+                    ])->columns(2)->collapsible(),
+
+                Section::make('is_published')
+                        ->label('Foi publicado')
+                        ->description('the post is published? ')
+                        ->schema([
+                            Select::make('is_published')
+                                ->label('Está publicado?')
+                                ->options([
+                                    0 => 'No',
+                                    1 => 'yes',
+                                ])
+                                ->default(0)
+                                ->required(),
+                        ]),
             ]);
     }
 
@@ -48,7 +139,8 @@ class PostResource extends Resource
                 TextColumn::make('user.name')
                     ->sortable()
                     ->searchable()
-                    ->label('Author'),
+                    ->label('Author')
+                    ->limit(20),
 
                 TextColumn::make('category.name')
                     ->limit(20)
