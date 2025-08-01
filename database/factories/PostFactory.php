@@ -24,15 +24,15 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->sentence(4),
-            'slug' => fake()->slug(),
+            'title' => $this->faker->sentence(4),
+            'slug' => $this->faker->slug(),
+            'thumbnail' => $this->faker->imageUrl(640, 480),
             'is_published' => rand(0, 1),
-            'content' => fake()->paragraphs(3, true),
+            'content' => $this->faker->paragraphs(3, true),
             'user_id' => User::factory(),
-            'tag_id' => Tag::factory(),
             'category_id' => Category::factory(),
-            'created_at' => fake()->dateTime(),
-            'updated_at' => fake()->dateTime(),
+            'created_at' => $this->faker->dateTime(),
+            'updated_at' => $this->faker->dateTime(),
         ];
     }
 }

@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('title', 100);
             $table->string('slug', 150);
+            $table->string('thumbnail', 255);
             $table->boolean('is_published')->default(false);
             $table->text('content');
+            $table->json('tags')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->unsigned();
-            $table->foreignId('tag_id')->nullable()->constrained()->unsigned();
             $table->foreignId('category_id')->nullable()->constrained()->unsigned();
             $table->timestamps();
         });
