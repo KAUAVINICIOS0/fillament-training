@@ -30,6 +30,7 @@ class Post extends Model
         'content',
         'thumbnail',
         'is_published',
+        'tags',
         'user_id',
         'category_id',
     ];
@@ -44,6 +45,7 @@ class Post extends Model
         return [
             'id' => 'integer',
             'user_id' => 'integer',
+            'tags' => 'array',
             'created_at' => 'timestamp',
             'updated_at' => 'timestamp',
         ];

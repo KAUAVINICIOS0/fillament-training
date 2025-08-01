@@ -10,6 +10,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Actions\ActionGroup;
@@ -18,6 +19,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -97,13 +99,16 @@ class PostResource extends Resource
                             ->required()
                             ->relationship('category', 'name'),
 
-                        Select::make('tags')
-                            ->multiple()
-                            ->label('tags')
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->relationship('tags', 'tag_name'),
+                        TagsInput::make('tags')
+                            ->label('Tags'),
+                        // Select::make('tags')
+                        //     ->multiple()
+                        //     ->label('tags')
+                        //     ->searchable()
+                        //     ->preload()
+                        //     ->required()
+                        //     ->relationship('tags', 'tag_name'),
+
                     ])->columns(2)->collapsible(),
 
                 Section::make('is_published')
